@@ -13,8 +13,8 @@ except:
     sys.exit(0)
 
 
-print "=======================================STARTING NMAP_SCANNER=========================================="
-print "                                       Nmap Version: ", scanner.nmap_version()
+print "=======================================NETWORK_SCANNER BY LOSSIFER=========================================="
+print "                                          Nmap Version:" ,scanner.nmap_version()
 print "======================================================================================================"
 
 ip = raw_input("Enter the ip address you want to scan: ")
@@ -31,18 +31,53 @@ except:
 
 
 type = raw_input("""\n####################////// Which type of scan do you want to run? //////###########################
-                1. sT == ^TCP Connect Scan^
-                2. sS == ^SYN Scan or half-open scan^
-                3. sA == ^ACK SCan^
-                4. sX == ^Xmas Tree Scan^
-                5. sN == ^Null Scan^\n""")
+                1. ^TCP Connect Scan^
+                2. ^SYN Scan or half-open scan^
+                3. ^ACK SCan^
+                4. ^Xmas Tree Scan^
+                5. ^Null Scan^
+		6. ^UDP Scan^
+		7. ^Comprehensive All Ports Scan^\n""")
 
 
+if type == "1":
+	scanner.scan(ip, '1-1024', '-v -sT -sV -Pn')
+	for host in scanner.all_hosts():
+        	print ('######################################################')
+        	print ('Host : %s (%s)' %(host, scanner[host].hostname())) 
+        	print ('State : %s' % scanner[host].state())
+        	print ('######################################################')
+        	for proto in scanner[host].all_protocols():
+         		print ('\n======================RESULT========================')
+                	print ('Protocol : %s' % proto)
 
-if type == "sT":
-    scanner.scan(ip, '1-1000', '-v -sT')
-    for host in scanner.all_hosts():
-            print ('######################################################')
+                	lport = scanner[host][proto].keys()
+                	lport.sort()
+                	for port in lport:
+          	        	print ('Port : %s\tState : %s\tName: %s\tVersion: %s\tReason: %s\tConf: %s' % (port, scanner[host][proto][port]['state'], scanner[host][proto][port]['name'], scanner[host][proto][port]['version'], scanner[host][proto][port]['reason'],scanner[host][proto][port]['conf']))
+			print ('=====================================================')
+
+elif type == "2":
+	scanner.scan(ip, '1-1024', '-v -sS -sV -Pn')
+	for host in scanner.all_hosts():
+   		print ('######################################################')
+        	print ('Host : %s (%s)' % (host, scanner[host].hostname())) 
+        	print ('State : %s' % scanner[host].state())
+        	print ('######################################################')
+        	for proto in scanner[host].all_protocols():
+         		print ('\n======================RESULT========================')
+                	print ('Protocol : %s' % proto)
+
+                	lport = scanner[host][proto].keys()
+                	lport.sort()
+                	for port in lport:
+          	        	print ('Port : %s\tState : %s\tName: %sVersion: %s\tReason: %s\tConf: %s' % (port, scanner[host][proto][port]['state'], scanner[host][proto][port]['name'],scanner[host][proto][port]['version'], scanner[host][proto][port]['reason'],scanner[host][proto][port]['conf']))
+            		print ('=====================================================')
+
+elif type == "3":
+	scanner.scan(ip, '1-1024', '-v -sA -sV -Pn')
+	for host in scanner.all_hosts():
+        	print ('######################################################')
                 print ('Host : %s (%s)' % (host, scanner[host].hostname())) 
                 print ('State : %s' % scanner[host].state())
                 print ('######################################################')
@@ -53,62 +88,11 @@ if type == "sT":
                         lport = scanner[host][proto].keys()
                         lport.sort()
                         for port in lport:
-                                print ('port : %s\tstate : %s' % (port, scanner[host][proto][port]['state']))
+          	        	print ('Port : %s\tState : %s\tName: %s\tVersion: %s\tReason: %s\tConf: %s' % (port, scanner[host][proto][port]['state'], scanner[host][proto][port]['name'],scanner[host][proto][port]['version'], scanner[host][proto][port]['reason'],scanner[host][proto][port]['conf']))
                         print ('=====================================================')
 
-elif type == "sS":
-    scanner.scan(ip, '1-1000', '-v -sS')
-        for host in scanner.all_hosts():
-        print ('######################################################')
-                print ('Host : %s (%s)' % (host, scanner[host].hostname())) 
-                print ('State : %s' % scanner[host].state())
-        print ('######################################################')
-                for proto in scanner[host].all_protocols():
-                        print ('\n======================RESULT========================')
-                        print ('Protocol : %s' % proto)
-
-                        lport = scanner[host][proto].keys()
-                        lport.sort()
-                        for port in lport:
-                                print ('port : %s\tstate : %s' % (port, scanner[host][proto][port]['state']))
-            print ('=====================================================')
-
-elif type == "sA":
-    scanner.scan(ip, '1-1000', '-v -sA')
-    for host in scanner.all_hosts():
-                print ('######################################################')
-                print ('Host : %s (%s)' % (host, scanner[host].hostname())) 
-                print ('State : %s' % scanner[host].state())
-                print ('######################################################')
-                for proto in scanner[host].all_protocols():
-                        print ('\n======================RESULT========================')
-                        print ('Protocol : %s' % proto)
-
-                        lport = scanner[host][proto].keys()
-                        lport.sort()
-                        for port in lport:
-                                print ('port : %s\tstate : %s' % (port, scanner[host][proto][port]['state']))
-                        print ('=====================================================')
-
-elif type == "sX":
-    scanner.scan(ip, '1-1000', '-v -sX')
-        for host in scanner.all_hosts():
-                print ('######################################################')
-                print ('Host : %s (%s)' % (host, scanner[host].hostname())) 
-                print ('State : %s' % scanner[host].state())
-                print ('######################################################')
-                for proto in scanner[host].all_protocols():
-                        print ('\n======================RESULT========================')
-                        print ('Protocol : %s' % proto)
-
-                        lport = scanner[host][proto].keys()
-                        lport.sort()
-                        for port in lport:
-                                print ('port : %s\tstate : %s' % (port, scanner[host][proto][port]['state']))
-                        print ('=====================================================')
-
-elif type == "sN":
-    scanner.scan(ip, '1-1000', '-v -sN')
+elif type == "4":
+	scanner.scan(ip, '1-1024', '-v -sX -sV -Pn')
         for host in scanner.all_hosts():
                 print ('######################################################')
                 print ('Host : %s (%s)' % (host, scanner[host].hostname())) 
@@ -121,8 +105,58 @@ elif type == "sN":
                         lport = scanner[host][proto].keys()
                         lport.sort()
                         for port in lport:
-                                print ('port : %s\tstate : %s' % (port, scanner[host][proto][port]['state']))
+          	        	print ('Port : %s\tState : %s\tName: %s\tVersion: %s\tReason: %s\tConf: %s' % (port, scanner[host][proto][port]['state'], scanner[host][proto][port]['name'],scanner[host][proto][port]['version'], scanner[host][proto][port]['reason'],scanner[host][proto][port]['conf']))
                         print ('=====================================================')
+
+elif type == "5":
+	scanner.scan(ip, '1-1024', '-v -sN -sV -Pn')
+        for host in scanner.all_hosts():
+                print ('######################################################')
+                print ('Host : %s (%s)' % (host, scanner[host].hostname())) 
+                print ('State : %s' % scanner[host].state())
+                print ('######################################################')
+                for proto in scanner[host].all_protocols():
+                        print ('\n======================RESULT========================')
+                        print ('Protocol : %s' % proto)
+
+                        lport = scanner[host][proto].keys()
+                        lport.sort()
+                        for port in lport:
+          	        	print ('Port : %s\tState : %s\tName: %s\tVersion: %s\tReason: %s\tConf: %s' % (port, scanner[host][proto][port]['state'], scanner[host][proto][port]['name'],scanner[host][proto][port]['version'], scanner[host][proto][port]['reason'],scanner[host][proto][port]['conf']))
+                        print ('=====================================================')
+
+elif type == "6":
+        scanner.scan(ip, '1-1024', '-v -sU -Pn')
+        for host in scanner.all_hosts():
+                print ('######################################################')
+                print ('Host : %s (%s)' % (host, scanner[host].hostname())) 
+                print ('State : %s' % scanner[host].state())
+                print ('######################################################')
+                for proto in scanner[host].all_protocols():
+                        print ('\n======================RESULT========================')
+                        print ('Protocol : %s' % proto)
+
+                        lport = scanner[host][proto].keys()
+                        lport.sort()
+                        for port in lport:
+          	        	print ('Port : %s\tState : %s\tName: %s\tReason: %s\tConf: %s' % (port, scanner[host][proto][port]['state'], scanner[host][proto][port]['name'], scanner[host][proto][port]['reason'],scanner[host][proto][port]['conf']))
+                        print ('=====================================================')
+
+elif type == "7":
+        scanner.scan(ip, '1-65535', '-v -sS -sV -O -sC -A -Pn')
+        for host in scanner.all_hosts():
+                print ('######################################################')
+                print ('Host : %s (%s)' % (host, scanner[host].hostname())) 
+                print ('State : %s' % scanner[host].state())
+                print ('######################################################')
+                for proto in scanner[host].all_protocols():
+                        print ('\n======================RESULT========================')
+                        print ('Protocol : %s' % proto)
+
+                        lport = scanner[host][proto].keys()
+                        lport.sort()
+                        for port in lport:
+          	        	print ('Port : %s\tState : %s\tName: %s\tVersion: %s\tProduct: %s\tExtrainfo: %s\tReason: %s\tConf: %s' % (port, scanner[host][proto][port]['state'], scanner[host][proto][port]['name'],scanner[host][proto][port]['version'], scanner[host][proto][port]['product'], scanner[host][proto][port]['extrainfo'], scanner[host][proto][port]['reason'],scanner[host][proto][port]['conf']))
 
 else:
     print("Enter the valid option.")
